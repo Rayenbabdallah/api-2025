@@ -2,7 +2,7 @@ from flask import Flask
 from flask_smorest import Api
 from db import db
 import os
-import models  # Ensure models are imported for SQLAlchemy
+import models  
 from resources.course_item import blp as CourseItemBlueprint
 from resources.specialization import blp as SpecializationBlueprint
 
