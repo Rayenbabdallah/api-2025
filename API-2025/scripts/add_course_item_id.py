@@ -1,23 +1,9 @@
-"""
-Add `course_item_id` TEXT column to the `course_items` table and populate
-existing rows with 32-char hex UUIDs (uuid4.hex). Also create a unique index.
-
-Usage (PowerShell):
-    # Stop the Flask server first!
-    python .\scripts\add_course_item_id.py
-
-The script will look for DATABASE_URL environment variable. If that is set and
-starts with "sqlite:///" it will use the local path after that prefix. Otherwise
-it defaults to './data.db'.
-
-This script is intended for development use only.
-"""
 import sqlite3
 import uuid
 import os
 import sys
 
-# Determine DB path (match app.py behavior)
+
 env_db = os.getenv("DATABASE_URL")
 if env_db and env_db.startswith("sqlite:///"):
     db_path = env_db[len("sqlite:///"):]
@@ -36,16 +22,13 @@ conn = sqlite3.connect(db_path)
 cur = conn.cursor()
 
 try:
-    # Try to add the column. If it exists, this will raise an OperationalError.
     print("Adding column course_item_id (if not exists)...")
     cur.execute("ALTER TABLE course_items ADD COLUMN course_item_id TEXT;")
     conn.commit()
     print("Column added.")
 except Exception as e:
-    # SQLite raises sqlite3.OperationalError if column already exists
     print(f"Could not add column (it may already exist): {e}")
 
-# Populate NULL / empty values with uuid4 hex
 print("Populating missing course_item_id values...")
 cur.execute("SELECT id, course_item_id FROM course_items")
 rows = cur.fetchall()
@@ -63,7 +46,6 @@ for row in rows:
 conn.commit()
 print(f"Populated {updated} rows with new UUIDs.")
 
-# Create unique index to enforce uniqueness on new column
 try:
     print("Creating unique index on course_item_id (if not exists)...")
     cur.execute(

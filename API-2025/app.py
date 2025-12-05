@@ -40,13 +40,12 @@ def create_app(db_url=None):
     api.register_blueprint(CourseItemBlueprint)
     api.register_blueprint(SpecializationBlueprint)
 
+    @app.get("/ping")
+    def ping():
+        return {"message": "pong"}
+
     return app
 
-
-# Minimal test route to verify container is working
-#@app.route("/ping")
-#def ping():
-#   return {"message": "pong"}
 
 
 # Run the app directly (works reliably in Docker)

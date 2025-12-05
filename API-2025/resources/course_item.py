@@ -51,13 +51,11 @@ class ItemList(MethodView):
     @blp.arguments(Course_ItemSchema)
     @blp.response(201, Course_ItemSchema)
     def post(self, course_item_data):
-        # Accept specialization_id as UUID string; resolve to internal integer id
         spec_uuid = course_item_data.get("specialization_id")
         spec = SpecializationModel.query.filter_by(specialization_id=spec_uuid).first()
         if not spec:
             abort(400, message="Specialization not found.")
 
-        # Prevent duplicate course item for the same specialization
         existing = CourseItemModel.query.filter_by(
             name=course_item_data.get("name"),
             specialization_id=spec.id,
@@ -65,7 +63,6 @@ class ItemList(MethodView):
         if existing:
             abort(400, message="Course_Item already exists for this specialization.")
 
-        # Replace external specialization_id (UUID) with internal DB id
         course_item_data["specialization_id"] = spec.id
 
         course_item = CourseItemModel(**course_item_data)

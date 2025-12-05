@@ -52,7 +52,6 @@ class SpecializationList(MethodView):
     @blp.arguments(Specialization_Schema)
     @blp.response(201, Specialization_Schema)
     def post(self, specialization_data):
-        # Prevent duplicate specialization names (unique constraint)
         existing = SpecializationModel.query.filter_by(name=specialization_data.get("name")).first()
         if existing:
             abort(400, message="Specialization already exists.")

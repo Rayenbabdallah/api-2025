@@ -1,19 +1,9 @@
-"""
-Add `specialization_id` TEXT column to the `specializations` table and populate
-existing rows with 32-char hex UUIDs (uuid4.hex). Also create a unique index.
-
-Usage (PowerShell):
-    # Stop the Flask server first!
-    python .\scripts\add_specialization_id.py
-
-This script is intended for development use only.
-"""
 import sqlite3
 import uuid
 import os
 import sys
 
-# Determine DB path (match app.py behavior)
+
 env_db = os.getenv("DATABASE_URL")
 if env_db and env_db.startswith("sqlite:///"):
     db_path = env_db[len("sqlite:///"):]
@@ -32,7 +22,6 @@ conn = sqlite3.connect(db_path)
 cur = conn.cursor()
 
 try:
-    # Try to add the column. If it exists, this will raise an OperationalError.
     print("Adding column specialization_id (if not exists)...")
     cur.execute("ALTER TABLE specializations ADD COLUMN specialization_id TEXT;")
     conn.commit()
@@ -40,7 +29,6 @@ try:
 except Exception as e:
     print(f"Could not add column (it may already exist): {e}")
 
-# Populate NULL / empty values with uuid4 hex
 print("Populating missing specialization_id values...")
 cur.execute("SELECT id, specialization_id FROM specializations")
 rows = cur.fetchall()
@@ -58,7 +46,7 @@ for row in rows:
 conn.commit()
 print(f"Populated {updated} rows with new UUIDs.")
 
-# Create unique index to enforce uniqueness on new column
+
 try:
     print("Creating unique index on specialization_id (if not exists)...")
     cur.execute(
