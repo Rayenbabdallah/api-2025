@@ -1,0 +1,389 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2025-12-07T00:30:00.000Z",
+  "__export_source": "codex-cli",
+  "resources": [
+    {
+      "_id": "wrk_api2025",
+      "parentId": null,
+      "modified": 1733531400000,
+      "created": 1733531400000,
+      "name": "API-2025",
+      "description": "Collection for API-2025 authentication, specialization, and course item endpoints.",
+      "scope": "collection",
+      "_type": "workspace"
+    },
+    {
+      "_id": "env_api2025_base",
+      "parentId": "wrk_api2025",
+      "modified": 1733531400000,
+      "created": 1733531400000,
+      "name": "Base Environment",
+      "data": {
+        "base_url": "http://localhost:5001",
+        "access_token": "",
+        "refresh_token": "",
+        "sample_specialization_id": "SPECIALIZATION_ID",
+        "sample_course_item_id": "COURSE_ITEM_ID",
+        "sample_user_id": "USER_ID"
+      },
+      "dataPropertyOrder": {
+        "&": [
+          "base_url",
+          "access_token",
+          "refresh_token",
+          "sample_specialization_id",
+          "sample_course_item_id",
+          "sample_user_id"
+        ]
+      },
+      "_type": "environment"
+    },
+    {
+      "_id": "fld_auth",
+      "parentId": "wrk_api2025",
+      "modified": 1733531400000,
+      "created": 1733531400000,
+      "name": "Auth",
+      "description": "",
+      "_type": "request_group"
+    },
+    {
+      "_id": "req_register",
+      "parentId": "fld_auth",
+      "modified": 1733531400000,
+      "created": 1733531400000,
+      "name": "Register (Public)",
+      "method": "POST",
+      "url": "{{ _.base_url }}/register",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"username\": \"student1\",\n  \"password\": \"ChangeMe123\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "_type": "request"
+    },
+    {
+      "_id": "req_login",
+      "parentId": "fld_auth",
+      "modified": 1733531400000,
+      "created": 1733531400000,
+      "name": "Login",
+      "method": "POST",
+      "url": "{{ _.base_url }}/login",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"username\": \"admin\",\n  \"password\": \"admin123\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        }
+      ],
+      "_type": "request"
+    },
+    {
+      "_id": "req_refresh",
+      "parentId": "fld_auth",
+      "modified": 1733531400000,
+      "created": 1733531400000,
+      "name": "Refresh Token",
+      "method": "POST",
+      "url": "{{ _.base_url }}/refresh",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.refresh_token }}"
+        }
+      ],
+      "_type": "request"
+    },
+    {
+      "_id": "req_update_role",
+      "parentId": "fld_auth",
+      "modified": 1733531400000,
+      "created": 1733531400000,
+      "name": "Update User Role (Admin)",
+      "method": "PUT",
+      "url": "{{ _.base_url }}/user/{{ _.sample_user_id }}/role",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"role\": \"professor\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.access_token }}"
+        }
+      ],
+      "_type": "request"
+    },
+    {
+      "_id": "fld_specializations",
+      "parentId": "wrk_api2025",
+      "modified": 1733531400000,
+      "created": 1733531400000,
+      "name": "Specializations",
+      "description": "",
+      "_type": "request_group"
+    },
+    {
+      "_id": "req_specialization_list",
+      "parentId": "fld_specializations",
+      "modified": 1733531400000,
+      "created": 1733531400000,
+      "name": "List Specializations",
+      "method": "GET",
+      "url": "{{ _.base_url }}/specialization",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.access_token }}"
+        }
+      ],
+      "_type": "request"
+    },
+    {
+      "_id": "req_specialization_get",
+      "parentId": "fld_specializations",
+      "modified": 1733531400000,
+      "created": 1733531400000,
+      "name": "Get Specialization",
+      "method": "GET",
+      "url": "{{ _.base_url }}/specialization/{{ _.sample_specialization_id }}",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.access_token }}"
+        }
+      ],
+      "_type": "request"
+    },
+    {
+      "_id": "req_specialization_create",
+      "parentId": "fld_specializations",
+      "modified": 1733531400000,
+      "created": 1733531400000,
+      "name": "Create Specialization",
+      "method": "POST",
+      "url": "{{ _.base_url }}/specialization",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Computer Science\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.access_token }}"
+        }
+      ],
+      "_type": "request"
+    },
+    {
+      "_id": "req_specialization_update",
+      "parentId": "fld_specializations",
+      "modified": 1733531400000,
+      "created": 1733531400000,
+      "name": "Update Specialization",
+      "method": "PUT",
+      "url": "{{ _.base_url }}/specialization/{{ _.sample_specialization_id }}",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Advanced Computer Science\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.access_token }}"
+        }
+      ],
+      "_type": "request"
+    },
+    {
+      "_id": "req_specialization_delete",
+      "parentId": "fld_specializations",
+      "modified": 1733531400000,
+      "created": 1733531400000,
+      "name": "Delete Specialization",
+      "method": "DELETE",
+      "url": "{{ _.base_url }}/specialization/{{ _.sample_specialization_id }}",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.access_token }}"
+        }
+      ],
+      "_type": "request"
+    },
+    {
+      "_id": "fld_course_items",
+      "parentId": "wrk_api2025",
+      "modified": 1733531400000,
+      "created": 1733531400000,
+      "name": "Course Items",
+      "description": "",
+      "_type": "request_group"
+    },
+    {
+      "_id": "req_course_item_list",
+      "parentId": "fld_course_items",
+      "modified": 1733531400000,
+      "created": 1733531400000,
+      "name": "List Course Items",
+      "method": "GET",
+      "url": "{{ _.base_url }}/course_item",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.access_token }}"
+        }
+      ],
+      "_type": "request"
+    },
+    {
+      "_id": "req_course_item_get",
+      "parentId": "fld_course_items",
+      "modified": 1733531400000,
+      "created": 1733531400000,
+      "name": "Get Course Item",
+      "method": "GET",
+      "url": "{{ _.base_url }}/course_item/{{ _.sample_course_item_id }}",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.access_token }}"
+        }
+      ],
+      "_type": "request"
+    },
+    {
+      "_id": "req_course_item_create",
+      "parentId": "fld_course_items",
+      "modified": 1733531400000,
+      "created": 1733531400000,
+      "name": "Create Course Item",
+      "method": "POST",
+      "url": "{{ _.base_url }}/course_item",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Algorithms I\",\n  \"type\": \"core\",\n  \"specialization_id\": \"{{ _.sample_specialization_id }}\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.access_token }}"
+        }
+      ],
+      "_type": "request"
+    },
+    {
+      "_id": "req_course_item_update",
+      "parentId": "fld_course_items",
+      "modified": 1733531400000,
+      "created": 1733531400000,
+      "name": "Update Course Item",
+      "method": "PUT",
+      "url": "{{ _.base_url }}/course_item/{{ _.sample_course_item_id }}",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"name\": \"Algorithms II\",\n  \"type\": \"advanced\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.access_token }}"
+        }
+      ],
+      "_type": "request"
+    },
+    {
+      "_id": "req_course_item_delete",
+      "parentId": "fld_course_items",
+      "modified": 1733531400000,
+      "created": 1733531400000,
+      "name": "Delete Course Item",
+      "method": "DELETE",
+      "url": "{{ _.base_url }}/course_item/{{ _.sample_course_item_id }}",
+      "body": {},
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.access_token }}"
+        }
+      ],
+      "_type": "request"
+    },
+    {
+      "_id": "req_course_item_assign_owner",
+      "parentId": "fld_course_items",
+      "modified": 1733531400000,
+      "created": 1733531400000,
+      "name": "Assign Course Item Owner (Admin)",
+      "method": "PUT",
+      "url": "{{ _.base_url }}/course_item/{{ _.sample_course_item_id }}/owner",
+      "body": {
+        "mimeType": "application/json",
+        "text": "{\n  \"owner_user_id\": \"{{ _.sample_user_id }}\"\n}"
+      },
+      "parameters": [],
+      "headers": [
+        {
+          "name": "Content-Type",
+          "value": "application/json"
+        },
+        {
+          "name": "Authorization",
+          "value": "Bearer {{ _.access_token }}"
+        }
+      ],
+      "_type": "request"
+    }
+  ]
+}

@@ -8,3 +8,7 @@ It allows users to perform all CRUD (Create, Read, Update, Delete) operations us
 - Create, read, update, and delete **course items**
 - Organized code using separate files (`app.py` and `db.py`)
 - Uses UUIDs for unique identifiers
+
+
+
+"""http://localhost:5001/swagger-ui/
